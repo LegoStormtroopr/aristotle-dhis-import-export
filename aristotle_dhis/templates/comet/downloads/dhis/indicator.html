@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+{% load dhis_tags %}
+<metaData xmlns="http://dhis2.org/schema/dxf/2.0" created="">
+<indicators>
+    <indicator code="{{item.pk}}" name="{{item.name}}"
+        created="{{item.created|date:"c"}}" lastUpdated="{{item.modified|date:"c" }}" shortName="{{item.short_name}}"
+        id="{{item.id}}">
+        <externalAccess>{{item.is_public|lower}}</externalAccess>
+        <publicAccess>{% public_flags item %}</publicAccess>
+        <!-- user name="Tom Wakiki" created="2012-11-21T12:02:04.303+0000" lastUpdated="2015-10-19T10:27:27.567+0000" id="GOLswS44mh8">
+            <externalAccess>false</externalAccess>
+        </user -->
+        <description>{{item.definition}}</description>
+        <annualized>false</annualized>
+        {% with type=item.indicatorType %}
+        <indicatorType name="{{type.name}}" created="{{type.created|date:"c"}}" lastUpdated="{{type.modified|date:"c"}}" id="{{type.id}}">
+            <externalAccess>{{type.is_public|lower}}</externalAccess>
+        </indicatorType>
+        {% endwith %}
+        <numerator>{{ item.numerator_computation}}</numerator>
+        <numeratorDescription>{{item.numerator_description}}</numeratorDescription>
+        <denominator>{{ item.denominator_computation }}</denominator>
+        <denominatorDescription>{{ item.denominator_description }}</denominatorDescription>
+        <url>{{item.get_absolute_url}}</url>
+    </indicator>
+</indicators>
+</metaData>
