@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+{% load dhis_tags %}
+<metaData xmlns="http://dhis2.org/schema/dxf/2.0" created="">
+<dataElements>
+    <dataElement code="{{item.pk}}" name="{{item.name}}"
+        created="{{item.created|date:"c"}}" lastUpdated="{{item.modified|date:"c" }}" shortName="{{item.short_name}}"
+        id="{{item.id}}">
+        <externalAccess>{{item.is_public|lower}}</externalAccess>
+        <publicAccess>{% public_flags item %}</publicAccess>
+        <!-- user name="Tom Wakiki" created="2012-11-21T12:02:04.303+0000" lastUpdated="2015-10-19T10:27:27.567+0000" id="GOLswS44mh8">
+            <externalAccess>false</externalAccess>
+        </user -->
+        <aggregationType></aggregationType>
+        <valueType>{% value_type item.valueDomain %}</valueType>
+        <formName></formName>
+        <url>{{item.get_absolute_url}}</url>
+        <zeroIsSignificant>false</zeroIsSignificant>
+        {% if item.valueDomain.permissiblevalue_set.count > 0 %}
+        {% with vd=item.valueDomain %}
+        <optionSet name="{{ vd.name }}" created="{{item.created|date:"c" }}" lastUpdated="{{vd.modified|date:"c" }}" id="{{ vd.id }}">
+            <externalAccess>{{vd.is_public|lower}}</externalAccess>
+            <!-- user name="Tom Wakiki" created="2012-11-21T12:02:04.303+0000" lastUpdated="2015-10-19T10:27:27.567+0000" id="GOLswS44mh8">
+                <externalAccess>false</externalAccess>
+            </user -->
+            <valueType>{% value_type vd %}</valueType>
+            <version>{{ vd.version }}</version>
+            <options>
+                {% for val in vs.permissiblevalue_set.all %}
+                <option code="{{ val.value }}" name="{{ val.meaning }}" created="{{item.created|date:"c" }}" lastUpdated="{{vd.modified|date:"c" }}" id="{{ vd.id }}:{{ val.value }}">
+                    <externalAccess>{{vd.is_public|lower}}</externalAccess>
+                </option>
+                {% endfor %}
+            </options>
+        </optionSet>
+        {% endwith %}
+        {% endif %}
+    </dataElement>
+</dataElements>
+</metaData>
