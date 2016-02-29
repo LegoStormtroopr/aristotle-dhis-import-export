@@ -6,7 +6,7 @@ def public_flags(item):
 
     return "r-------"
 
-
+@register.simple_tag
 def value_type(item):
 
     type_map = {
